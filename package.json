@@ -1,0 +1,40 @@
+{
+    "name": "toggle-in-web",
+    "version": "1.0.0",
+    "description": "Webサイトでトグルスイッチを切り替え、状態をAPIで呼び出せる",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ezaki-lab/toggle-in-web.git"
+    },
+    "keywords": [],
+    "author": "Takara Hamaguchi",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ezaki-lab/toggle-in-web.git/issues"
+    },
+    "homepage": "https://github.com/ezaki-lab/toggle-in-web.git#readme",
+    "dependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.2.6",
+        "css-loader": "^5.2.6",
+        "esbuild-loader": "^2.13.1",
+        "eslint": "^7.30.0",
+        "eslint-plugin-react": "^7.24.0",
+        "html-loader": "^2.1.2",
+        "html-webpack-plugin": "^5.3.2",
+        "mini-css-extract-plugin": "^2.1.0",
+        "postcss-cli": "^8.3.1",
+        "postcss-loader": "^6.1.1",
+        "tailwindcss": "^2.2.4",
+        "webpack": "^5.42.1",
+        "webpack-cli": "^4.7.2",
+        "webpack-dev-server": "^3.11.2"
+    }
+}
