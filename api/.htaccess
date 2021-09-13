@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /toggle-in-web/index.cgi/$1 [L]
+RewriteRule ^(.*)$ /toggle-in-web/api/index.cgi/$1 [L]

@@ -28,7 +28,7 @@ def user(username: str):
                 user = users[users["id"] == username]
 
                 if user.shape[0] == 0:
-                    jsonify({
+                    return jsonify({
                         "result": "Not Found",
                         "user": None,
                         "available": None
@@ -42,7 +42,7 @@ def user(username: str):
                     available = available.split(',')
 
                 return jsonify({
-                    "result": "Not Found",
+                    "result": "OK",
                     "user": user.iloc[0]["id"],
                     "available": available
                 }), 200
