@@ -57,7 +57,7 @@ module.exports = {
       filename: './styles.css'
     }),
   ],
-  mode: 'development',
+  mode: 'production',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts']
   },

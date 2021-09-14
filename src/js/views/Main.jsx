@@ -140,8 +140,8 @@ const Main = (props) => {
 
                 <div className="p-5 bg-gray-100">
                   <div className="mb-2 border-b-2 pb-1 border-gray-300">
-                    <span className="text-orange-500 font-medium mr-5 pb-1">
-                      PUT
+                    <span className="text-green-500 font-medium mr-5 pb-1">
+                      GET
                     </span>
                     https://ezaki-lab.littlestar.jp/toggle-in-web/api/switch/{toggle.id}
                   </div>
