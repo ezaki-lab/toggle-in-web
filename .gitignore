@@ -1,5 +1,6 @@
 .vscode
 package-lock.json
 tokens.js
+tokens.py
 db_info.py
 node_modules
