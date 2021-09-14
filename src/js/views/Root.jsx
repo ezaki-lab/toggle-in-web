@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import getThisUserDetails from '../services/getThisUserDetails';
+import Main from './Main';
 
 const Root = () => {
-  const [user, setUser] = useState('unknown');
+  const [user, setUser] = useState('');
+  const [available, setAvailable] = useState([]);
 
   const mainObj = useRef(null);
 
@@ -18,23 +20,29 @@ const Root = () => {
 
   // URL変数「user」にユーザーが指定されていたら、そのユーザーのページを表示
   useEffect(() => {
+    loadUser();
+  }, []);
+
+  const loadUser = () => {
     const url = new URL(location.href);
     const userByUrl = url.searchParams.get("user");
 
-    getThisUserDetails(userByUrl)
-      .then((res) => {
-        if (res.status === 200 || res.status === 404) {
-          return res.json();
-        }
-        throw new Error('Server Error');
-      })
-      .then((json) => {
-        if (json.result !== 'Not Found') {
+    if (userByUrl !== null) {
+      getThisUserDetails(userByUrl)
+        .then((res) => {
+          if (res.status === 200 || res.status === 404) {
+            return res.json();
+          }
+          throw new Error('Server Error');
+        })
+        .then((json) => {
           setUser(json.user);
-          console.log(json.available);
-        }
-      });
-  });
+          setAvailable(json.available);
+        });
+    } else {
+      setUser('unknown');
+    }
+  };
 
   // main要素のサイズを最大に
   const changeWindowSize = () => {
@@ -43,12 +51,15 @@ const Root = () => {
   };
 
   return (
-    <div
-      className={className}
+    <main
       ref={mainObj}
     >
-      <h1>Hello {user}</h1>
-    </div>
+      <Main
+        user={user}
+        available={available}
+        loadUser={loadUser}
+      />
+    </main>
   );
 };
 
