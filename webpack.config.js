@@ -57,11 +57,11 @@ module.exports = {
       filename: './styles.css'
     }),
   ],
-  mode: 'production',
+  mode: 'development',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts']
   },
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: __dirname,
     open: true,
