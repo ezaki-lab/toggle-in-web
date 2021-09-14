@@ -143,7 +143,7 @@ const Main = (props) => {
                     <span className="text-green-500 font-medium mr-5 pb-1">
                       GET
                     </span>
-                    https://ezaki-lab.littlestar.jp/toggle-in-web/api/switch/{toggle.id}
+                    Bearer https://ezaki-lab.littlestar.jp/toggle-in-web/api/switch/{toggle.id}
                   </div>
                   <div>
                     <h1 className="font-medium">
