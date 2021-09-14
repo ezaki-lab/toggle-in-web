@@ -9,31 +9,43 @@ const Main = (props) => {
   const [toggles, setToggles] = useState([]);
   const [newSwitchName, setNewSwitchName] = useState('');
   const [message, setMessage] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     loadSwitches();
   }, [props.available]);
 
+  // 全スイッチを読み込む
   const loadSwitches = async () => {
     const tmp = [];
+    let fetchedNum = 0;
 
-    for (let toggle of props.available) {
-      await getSwitchInfo(toggle)
-        .then((res) => {
-          if (res.status == 200 || res.status == 404) {
-            return res.json();
-          }
-          throw new Error('Server Error');
-        })
-        .then((json) => {
-          if (json.result === 'OK') {
-            tmp.push({
-              id: json.switch,
-              status: json.status,
-              token: json.token
-            });
-          }
-        });
+    if (props.available !== null) {
+      for (let toggle of props.available) {
+        await getSwitchInfo(toggle)
+          .then((res) => {
+            fetchedNum++;
+            if (res.status == 200 || res.status == 404) {
+              return res.json();
+            }
+            throw new Error('Server Error');
+          })
+          .then((json) => {
+            if (json.result === 'OK') {
+              tmp.push({
+                id: json.switch,
+                status: json.status,
+                token: json.token
+              });
+            }
+          });
+
+        if (props.available.length === fetchedNum) {
+          setIsLoaded(true);
+        }
+      }
+    } else {
+      setIsLoaded(true);
     }
 
     setToggles(tmp);
@@ -41,9 +53,10 @@ const Main = (props) => {
 
   // リダイレクト
   const handlerButton = (e) => {
-    window.location.href = `https://ezaki-lab.littlestar.jp/toggle-in-web/?user=${inputName}`;
+    window.location.href = `?user=${inputName}`;
   };
 
+  // スイッチ追加
   const handlerAddSwitchClick = (e) => {
     addSwitch(newSwitchName)
       .then((res) => {
@@ -57,16 +70,20 @@ const Main = (props) => {
           setMessage('登録しました。');
           (async () => {
             await updateUser(props.user, {
-              'available': [
-                ...props.available,
-                newSwitchName
-              ]
-            }).then((res) => res.json()).then((json) => { console.log(json); });
+              'available': (
+                props.available !== null ? ([
+                  ...props.available,
+                  newSwitchName
+                ]
+                ) : ([
+                  newSwitchName
+                ]))
+            });
 
             props.loadUser();
           })();
         } else {
-          setMessage('そのIDは既に存在します');
+          setMessage('そのIDは既に存在します。他のIDにしましょう。');
         }
       });
   };
@@ -81,6 +98,18 @@ const Main = (props) => {
           <h1 className="text-3xl text-green-900 font-bold">
             {props.user}さんようこそ！
           </h1>
+
+          {!isLoaded && (
+            <div className="mt-3">
+              現在読み込み中です…
+              {
+                props.available !== null
+                  ? props.available.length * 0.7 + 2
+                  : 0
+              }
+              秒ほど時間がかかります…
+            </div>
+          )}
 
           <ul>
             {toggles.map((toggle, index) =>
@@ -139,7 +168,7 @@ const Main = (props) => {
                 </div>
 
                 <div className="p-5 bg-gray-100">
-                  <div className="mb-2 border-b-2 pb-1 border-gray-300">
+                  <div className="mb-2 border-b-2 pb-1 border-gray-300 break-all">
                     <span className="text-green-500 font-medium mr-5 pb-1">
                       GET
                     </span>
@@ -149,38 +178,40 @@ const Main = (props) => {
                     <h1 className="font-medium">
                       Header
                     </h1>
-                    <div className="ml-3 text-gray-800">
+                    <div className="ml-3 text-gray-800 break-all">
                       Authorization: Bearer {toggle.token}
                     </div>
                   </div>
                 </div>
               </li>
             )}
-            <li className="mt-5 flex flex-row">
-              <h1 className="text-2xl font-medium flex flex-col justify-center">
-                スイッチを追加
-              </h1>
-              <div className="ml-10 flex flex-col">
-                <span className="text-sm">
-                  スイッチID
-                </span>
-                <input
-                  type="text"
-                  value={newSwitchName}
-                  onChange={(e) => {
-                    setNewSwitchName(e.target.value.replace(/\s+/g, ""));
-                  }}
-                  className="w-64 px-3 py-1 rounded-xl border-2 border-yellow-500"
-                />
-              </div>
-              <button
-                className="px-3 py-1 ml-10 bg-yellow-200 font-medium border-2 border-yellow-600 rounded-xl"
-                onClick={handlerAddSwitchClick}
-              >
-                追加
-              </button>
-            </li>
-            <li>
+            {isLoaded && (
+              <li className="mt-5 flex flex-row">
+                <h1 className="text-2xl font-medium flex flex-col justify-center">
+                  スイッチを追加
+                </h1>
+                <div className="ml-10 flex flex-col">
+                  <span className="text-sm">
+                    スイッチID
+                  </span>
+                  <input
+                    type="text"
+                    value={newSwitchName}
+                    onChange={(e) => {
+                      setNewSwitchName(e.target.value.replace(/\s+/g, ""));
+                    }}
+                    className="w-64 px-3 py-1 rounded-xl border-2 border-yellow-500"
+                  />
+                </div>
+                <button
+                  className="px-3 py-1 ml-10 bg-yellow-200 font-medium border-2 border-yellow-600 rounded-xl"
+                  onClick={handlerAddSwitchClick}
+                >
+                  追加
+                </button>
+              </li>
+            )}
+            <li className="mt-2">
               {message}
             </li>
           </ul>
@@ -198,7 +229,7 @@ const Main = (props) => {
               className="w-full px-3 py-1 rounded-xl"
               value={inputName}
               onChange={(e) => {
-                setInputName(e.target.value);
+                setInputName(e.target.value.replace(/\s+/g, ""));
               }}
             />
             <button

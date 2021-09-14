@@ -28,7 +28,7 @@ const Root = () => {
     const userByUrl = url.searchParams.get("user");
 
     if (userByUrl !== null) {
-      setUser(userByUrl.user);
+      setUser(userByUrl);
 
       getThisUserDetails(userByUrl)
         .then((res) => {
