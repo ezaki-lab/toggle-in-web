@@ -135,12 +135,12 @@ const Main = (props) => {
                             switchToggle(toggle.id);
                           }}
                         >
-                          オン
+                          オンにする
                         </button>
                         <div
                           className="px-5 py-2 text-gray-700 font-medium bg-gray-300 rounded-2xl"
                         >
-                          オフ
+                          オフにする
                         </div>
                       </>
                     ) : (
@@ -148,7 +148,7 @@ const Main = (props) => {
                         <div
                           className="mr-5 px-5 py-2 text-gray-700 font-medium bg-gray-300 rounded-2xl"
                         >
-                          オン
+                          オンにする
                         </div>
                         <button
                           className="px-5 py-2 font-medium bg-red-500 rounded-2xl"
@@ -160,7 +160,7 @@ const Main = (props) => {
                             switchToggle(toggle.id);
                           }}
                         >
-                          オフ
+                          オフにする
                         </button>
                       </>
                     )}
