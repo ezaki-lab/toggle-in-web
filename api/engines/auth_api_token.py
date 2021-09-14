@@ -2,7 +2,7 @@ from engines.tokens import GENERAL_TOKEN as TOKEN
 
 
 # サービスを提供する上でのトークンと一致すれば
-def auth_api_token(auth: str) -> bool:
+def auth_api_token(auth: str, option_token: str = None) -> bool:
     # 認証文字列がNoneなら脱落
     if auth == None:
         return False
@@ -18,8 +18,11 @@ def auth_api_token(auth: str) -> bool:
     # トークン部分
     token = auth[7:]
 
-    # 記録されているトークンと一致するなら
     if token == TOKEN:
+        # 記録されているトークンと一致するなら
+        return True
+    elif token == option_token:
+        # 正しいトークンが指定されているなら
         return True
 
     return False

@@ -1,5 +1,5 @@
 ###################################
-#  ユーザー情報API
+#  情報API
 ###################################
 
 from engines.check_get_request import check_get_request
@@ -7,11 +7,11 @@ from engines.select_from_table import select_from_table
 import logging
 from flask import abort, Blueprint, request, jsonify
 
-app = Blueprint("user", __name__)
+app = Blueprint("info", __name__)
 
 
-@app.route("/user/<username>", methods=["GET"])
-def user(username: str):
+@app.route("/info/<switch_id>", methods=["GET"])
+def info(switch_id: str):
     # アクセス解析のためのロギング
     logging.info("|{}| {} |{}|".format(
         request.method, request.full_path, request.remote_addr
@@ -23,27 +23,25 @@ def user(username: str):
 
             if status == 200:
                 # データベースから取ってきてDataFrameにし、リスト辞書に変換
-                users = select_from_table("toggle_in_web_users")
-                user = users[users["id"] == username]
+                switches = select_from_table("toggle_in_web_switches")
+                switch = switches[switches["id"] == switch_id]
 
-                if user.shape[0] == 0:
+                if switch.shape[0] == 0:
                     return jsonify({
                         "result": "Not Found",
-                        "user": None,
-                        "available": None
+                        "switch": None,
+                        "token": None,
+                        "status": None,
                     }), 404
 
-                # 利用可能なトグルスイッチ一覧
-                available = user.iloc[0]["available"]
-                if available == None:
-                    available = []
-                else:
-                    available = available.split(',')
+                # statusの型をboolに変換
+                switch["status"] = switch["status"].astype(bool)
 
                 return jsonify({
                     "result": "OK",
-                    "user": user.iloc[0]["id"],
-                    "available": available
+                    "switch": switch.iloc[0]["id"],
+                    "token": switch.iloc[0]["token"],
+                    "status": bool(switch.iloc[0]["status"]),
                 }), 200
 
             elif status == 401:

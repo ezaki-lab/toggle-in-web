@@ -4,6 +4,8 @@ from flask import Flask
 from flask_cors import CORS
 
 import user
+import info
+import switch
 
 
 # デバッグのためのロギング
@@ -20,6 +22,8 @@ CORS(app)
 
 # すべてのアプリを統合
 app.register_blueprint(user.app)
+app.register_blueprint(info.app)
+app.register_blueprint(switch.app)
 
 
 ###################################
