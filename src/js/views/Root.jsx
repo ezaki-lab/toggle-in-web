@@ -28,6 +28,8 @@ const Root = () => {
     const userByUrl = url.searchParams.get("user");
 
     if (userByUrl !== null) {
+      setUser(userByUrl.user);
+
       getThisUserDetails(userByUrl)
         .then((res) => {
           if (res.status === 200 || res.status === 404) {
@@ -36,7 +38,6 @@ const Root = () => {
           throw new Error('Server Error');
         })
         .then((json) => {
-          setUser(json.user);
           setAvailable(json.available);
         });
     } else {

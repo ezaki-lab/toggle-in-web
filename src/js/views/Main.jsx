@@ -73,7 +73,7 @@ const Main = (props) => {
 
   return (
     <div
-      className="p-10 min-h-full bg-yellow-200 border-white"
+      className="p-10 min-h-full bg-yellow-200 border-white overflow-x-hidden"
       style={{ borderWidth: '24px' }}
     >
       {props.user !== 'unknown' ? (
@@ -143,14 +143,14 @@ const Main = (props) => {
                     <span className="text-green-500 font-medium mr-5 pb-1">
                       GET
                     </span>
-                    Bearer https://ezaki-lab.littlestar.jp/toggle-in-web/api/switch/{toggle.id}
+                    https://ezaki-lab.littlestar.jp/toggle-in-web/api/switch/{toggle.id}
                   </div>
                   <div>
                     <h1 className="font-medium">
                       Header
                     </h1>
                     <div className="ml-3 text-gray-800">
-                      Authorization: {toggle.token}
+                      Authorization: Bearer {toggle.token}
                     </div>
                   </div>
                 </div>
